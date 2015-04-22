@@ -9,12 +9,19 @@ module.exports = function (grunt) {
             eqeqeq: true,
             reporter: require('jshint-stylish')
          },
-         src: ['*.js', 'src/**/*.js', 'test/**/*.js']
+         files: {
+            src: ['*.js', 'src/**/*.js']
+         },
+         tests: {
+            options: { expr: true },
+            src: ['test/**/*.js']
+         }
       },
 
       mochaTest: {
          options: {
-            timeout: 30000
+            timeout: 30000,
+            require: ['should']
          },
          test: {
             src: ['test/**/*.js']
