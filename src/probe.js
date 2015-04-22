@@ -1,32 +1,48 @@
+'use strict';
+
 var Tasks = require('./tasks');
-var Agent = require('superagent').agent;
+var superagent = require('superagent');
 var async = require('async');
 var _ = require('lodash');
 
 function Probe (name) {
 
-   var _name = _.isString(name) ? name : 'anonymous probe';
-   var _agent = new Agent();
-   var _tasks = new Tasks();
+   this.name = _.isString(name) ? name : 'anonymous probe';
 
-   this.name = function (name) {
+   this.tasks = new Tasks();
+}
 
-      _name = _.isString(name) ? name : _name;
+(function () {
 
-      return _name;
-   };
+   this.dispatch = function (config, callback) {
 
-   this.dispatch = function (callback) {
+      var agent = new superagent.agent();
+      var method = 'series';
 
-      async.series(
-         _.map(_tasks.all(), function (task) {
+      if (_.isPlainObject(config)) {
+
+         agent = config.agent || agent;
+         method = config.parallel ? 'parallel' : 'series';
+      } else if (_.isFunction(config)) {
+
+         callback = config;
+      }
+
+      async[method](
+         _.map(this.tasks.all(), function (task) {
             
             return function (asyncCallback) {
 
-               task.run(_agent, function (taskResult) {
+               if (task.done()) {
 
-                  asyncCallback(null, taskResult);
-               });
+                  asyncCallback(null, task.result);
+               } else {
+
+                  task.run(agent, function (taskResult) {
+
+                     asyncCallback(null, taskResult);
+                  });
+               }
             };
          }),
          function (err, result) {
@@ -36,7 +52,6 @@ function Probe (name) {
       );
    };
 
-   this.tasks = _tasks;
-}
+}).call(Probe.prototype);
 
 module.exports= Probe;
