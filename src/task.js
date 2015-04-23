@@ -1,35 +1,34 @@
 var _ = require('lodash');
 
 function Task (name, func) {
-   
-   var _name = name || 'unnamed task';
-   var _func = func || _.noop();
-   var _result = null;
+
+   this.name = _.isString(name) ? name : 'anonymous task';
+   this.func = _.isFunction(func) ? func : _.noop;
+   this.result = undefined;
+
+   // accumulates the numbe rof times this task has ran
+   this.counter = 0;
+}
+
+(function () {
 
    this.run = function (agent, callback) {
+      
+      this.func(agent, _.bind(function (err, result) {
 
-      _func(agent, function (err, result) {
+         this.counter += 1;
+         this.result = err || result;
 
-         _result = err || result;
+         callback(this.result);
 
-         callback(_result);
-      });
-   };
-
-   this.name = function () {
-
-      return _name;
-   };
-
-   this.result = function () {
-
-      return _result;
+      }, this));
    };
 
    this.done = function () {
       
-      return (_result !== null);
+      return (this.counter > 0);
    };
-}
+
+}).call(Task.prototype);
 
 module.exports = Task;
