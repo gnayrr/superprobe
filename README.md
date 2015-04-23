@@ -14,7 +14,8 @@ var probe = superprobe.probe();
 
 probe.tasks.add(function (agent, done) {
 	agent
-	.get('http://api.openweathermap.org/data/2.5/weather?q=seattle,wa')
+	.get('http://api.openweathermap.org/data/2.5/weather')
+	.query({q: 'seattle,wa'})
 	.end(done);
 });
 

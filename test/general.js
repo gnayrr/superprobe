@@ -100,4 +100,26 @@ describe('Simple use case', function () {
          done();
    	});
    });
+
+   it('should complete SuperAgent tasks', function (done) {
+      
+      var probe = superprobe.probe();
+
+      probe.tasks.add(function (agent, done) {
+
+         agent.get('http://api.openweathermap.org/data/2.5/weather')
+         .query({ q: 'seattle,wa'})
+         .end(done);
+      });
+
+      probe.tasks.count().should.be.exactly(1);
+
+      probe.dispatch(function (results) {
+
+         results.length.should.be.exactly(1);
+         results[0].status.should.be.exactly(200);
+
+         done();
+      });
+   });
 });
