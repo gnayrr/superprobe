@@ -10,16 +10,15 @@ Create a bunch of probes, assign SuperAgent tasks to them, and dispatch them in 
 ```js
 
 var superprobe = require('superprobe');
-
 var probe = superprobe.probe();
 
 probe.tasks.add(function (agent, done) {
-
-	agent.get('http://api.openweathermap.org/data/2.5/weather?q=seattle,wa').end(done);
+	agent
+	.get('http://api.openweathermap.org/data/2.5/weather?q=seattle,wa')
+	.end(done);
 });
 
 probe.dispatch(function (results) {
-
 	var weather = results[0];
 });
 
