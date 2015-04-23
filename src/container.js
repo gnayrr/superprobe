@@ -10,15 +10,16 @@ function Container () {
    };
 
    this.get = function (name) {
-      
-      return _.find(_items, function (item) {
-         return (item.name === name);
-      });
-   };
 
-   this.size = function () {
-      
-      return _items.length;
+      if (!_.isString(name)) {
+
+         return undefined;
+      } else {
+
+         return _.find(_items, function (item) {
+            return (item.name === name);
+         });
+      }
    };
 
    this.all = function () {

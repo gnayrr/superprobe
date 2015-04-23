@@ -5,8 +5,28 @@ module.exports = function (grunt) {
 
       jshint: {
          options: {
+            bitwise: true,
             curly: true,
+            boss: true,
             eqeqeq: true,
+            eqnull: true,
+            freeze: true,
+            expr: true,
+            immed: true,
+            noarg: true,
+            onevar: true,
+            noempty: false,
+            nonbsp: true,
+            smarttabs: true,
+            trailing: true,
+            camelcase: false,
+            undef: false,
+            unused: false,
+            strict: false,
+            browser: false,
+            jquery: false,
+            node: true,
+            quotmark: 'single',
             reporter: require('jshint-stylish')
          },
          files: {

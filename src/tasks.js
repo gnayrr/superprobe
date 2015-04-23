@@ -31,15 +31,19 @@ function Tasks () {
       return _container.get(name);
    };
 
-   this.count = function () {
-      
-      return _container.size();
-   };
-
    this.all = function () {
       
       return _container.all();
    };
 }
+
+(function () {
+   
+   this.count = function () {
+      
+      return this.all().length;
+   };
+
+}).call(Tasks.prototype);
 
 module.exports = Tasks;
