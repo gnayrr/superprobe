@@ -1,7 +1,7 @@
 {
    "name": "SuperProbe",
-   "private": true,
    "version": "0.0.1",
+   "private": true,
    "description": "An simple framework for managing SuperAgent tasks",
    "license": "MIT",
    "main": "index.js",

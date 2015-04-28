@@ -122,4 +122,50 @@ describe('Simple use case', function () {
          done();
       });
    });
+
+   it('should complete SuperAgent tasks in parallel', function (done) {
+      
+      var probe = superprobe.probe();
+
+      probe.tasks
+      .add(function (agent, done) {
+         
+         agent.get('http://api.openweathermap.org/data/2.5/weather')
+         .query({ q: 'irvine'})
+         .end(done);
+      })
+      .add(function (agent, done) {
+         
+         agent.get('http://api.openweathermap.org/data/2.5/weather')
+         .query({ q: 'brea'})
+         .end(done);
+      })
+      .add(function (agent, done) {
+         
+         agent.get('http://api.openweathermap.org/data/2.5/weather')
+         .query({ q: 'tacoma'})
+         .end(done);
+      })
+      .add(function (agent, done) {
+         
+         agent.get('http://api.openweathermap.org/data/2.5/weather')
+         .query({ q: 'tustin'})
+         .end(done);
+      });
+
+      probe.tasks.count().should.be.exactly(4);
+
+      probe.dispatch({ parallel: true }, function (results) {
+         
+         results.length.should.be.exactly(4);
+
+         _.each(results, function (result) {
+
+            result.status.should.be.exactly(200);
+            result.body.should.be.an.object;
+         });
+
+         done();
+      });
+   });
 });
