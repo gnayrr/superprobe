@@ -1,6 +1,6 @@
 {
-   "name": "SuperProbe",
-   "version": "0.0.1",
+   "name": "superprobe",
+   "version": "0.0.2",
    "private": true,
    "description": "An simple framework for managing SuperAgent tasks",
    "license": "MIT",
